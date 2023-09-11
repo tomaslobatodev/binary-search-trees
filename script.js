@@ -43,12 +43,35 @@ class Tree {
     return newNode
   }
 
-  insert() {
-
+  insert(value, current = this.root) {
+    if (value === null) return new Node(value)
+    if (current === null) return new Node(value)
+    if (current.value === value) return new Node(value, current.left, current.right)
+      
+    //if the current value is less than the inputted value it calls insert again but now current is the right of the previous current
+    if (current.value < value) {
+      current.right = this.insert(value, current.right)
+    }
+    //and vice versa
+    else {
+      current.left = this.insert(value, current.left)
+    }
+  
+    return current
   }
 
-  delete() {
+  delete(value, current = this.root) {
+    if (value === null) return new Node(value)
+    if (current === null) return new Node(value)
+    if (current.value === value) return null
 
+    if(current.value < value) {
+      current.right = this.delete(value, current.right)
+    } else {
+      current.left = this.delete(value, current.left)
+    }
+
+    return current
   }
 
   find() {
@@ -71,4 +94,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 const myBinaryTree = new Tree([3,2,1,4,5,7,9,8,10,0,-1,11])
-prettyPrint(myBinaryTree.root)
+
+myBinaryTree.insert(12)
+myBinaryTree.delete(0)
+prettyPrint(myBinaryTree.root) 
