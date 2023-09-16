@@ -45,8 +45,14 @@ class Tree {
 
   insert(value, current = this.root) {
     if (value === null) return new Node(value)
-    if (current === null) return new Node(value)
-    if (current.value === value) return new Node(value, current.left, current.right)
+    if (current === null) {
+      console.log('\x1b[32m%s\x1b[0m', `- Node ${value} inserted`);
+      return new Node(value);
+  }
+    if (current.value === value) {
+      console.log('\x1b[32m%s\x1b[0m', `- Node ${value} inserted`)
+      return new Node(value, current.left, current.right)
+    }
       
     //if the current value is less than the inputted value it calls insert again but now current is the right of the previous current
     if (current.value < value) {
@@ -63,8 +69,12 @@ class Tree {
   delete(value, current = this.root) {
     if (value === null) return new Node(value)
     if (current === null) return new Node(value)
-    if (current.value === value) return null
+    if (current.value === value) {
+      console.log('\x1b[31m%s\x1b[0m', `- Node ${value} deleted`)
+      return null
+    }
 
+    //move
     if(current.value < value) {
       current.right = this.delete(value, current.right)
     } else {
@@ -74,8 +84,25 @@ class Tree {
     return current
   }
 
-  find() {
+  find(value, current = this.root) {
+     // Value not found
+    if (current === null) {
+      console.log("Not found")
+      return null
+    }
 
+    // Value found
+    if (current.value === value) {
+      console.log("Node: ", current)
+      return current
+    }
+  
+    //move
+    if (current.value < value) {
+      return this.find(value, current.right)
+    } else {
+      return this.find(value, current.left)
+    }
   }
 }
 
@@ -96,5 +123,5 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const myBinaryTree = new Tree([3,2,1,4,5,7,9,8,10,0,-1,11])
 
 myBinaryTree.insert(12)
-myBinaryTree.delete(0)
-prettyPrint(myBinaryTree.root) 
+myBinaryTree.delete(8)
+prettyPrint(myBinaryTree.root)
